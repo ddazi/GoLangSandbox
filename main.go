@@ -25,6 +25,7 @@ func main() {
 	member := prepareStruct("danny")
 	writeFile(f, member)
 	outputArray()
+	outputSliceTestingReference()
 }
 
 func openFile() *os.File {
@@ -60,4 +61,19 @@ func outputArray() {
 		fmt.Println("Content Array Line ", i, v)
 
 	}
+}
+
+func outputSliceTestingReference() {
+	newSlice := []string{"testSlice1", "testSlice2", "testSlice3", "testSlice4", "testSlice5"}
+	fmt.Println("Content Slice Complete", newSlice)
+
+	for i, v := range newSlice {
+		fmt.Println("Content Slice Line ", i, v)
+	}
+	newSliceReferenz := newSlice
+
+	newSliceReferenz[0] = "testSliceChanged"
+	fmt.Println("Slice Reference:", newSliceReferenz)
+	fmt.Println("Slice Origin", newSlice)
+
 }
