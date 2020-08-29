@@ -112,7 +112,7 @@ func createAndServeHttp() {
 	}
 
 }
-func hello(w http.ResponseWriter, req *http.Request) {
+func hello(w http.ResponseWriter, _ *http.Request) {
 	_, err := fmt.Fprintf(w, "Hi I'm from the Webserver\n")
 	if err != nil {
 		panic(err)
