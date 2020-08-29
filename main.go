@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -25,10 +27,11 @@ func main() {
 	}()
 	member := prepareStruct("danny")
 	writeFile(f, member)
-
 	outputArray()
 	outputSliceTestingReference()
 	creatingAndLoopMap()
+	go createAndServeHttp()
+	getHttpLocal()
 }
 
 func openFile() *os.File {
@@ -99,4 +102,42 @@ func creatingAndLoopMap() {
 		fmt.Println("Key:", i)
 		fmt.Println("Value:", v)
 	}
+}
+
+func createAndServeHttp() {
+	http.HandleFunc("/foo", hello)
+	err := http.ListenAndServe(":8090", nil)
+	if err != nil {
+		panic(err)
+	}
+
+}
+func hello(w http.ResponseWriter, req *http.Request) {
+	_, err := fmt.Fprintf(w, "Hi I'm from the Webserver\n")
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+func getHttpLocal() {
+	resp, err := http.Get("http://localhost:8090/foo")
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	fmt.Println("Response:", resp.Status)
+	scanner := bufio.NewScanner(resp.Body)
+	for i := 0; scanner.Scan() && i < 5; i++ {
+		fmt.Println(scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+
 }
