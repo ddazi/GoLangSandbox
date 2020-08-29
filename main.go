@@ -26,6 +26,7 @@ func main() {
 	writeFile(f, member)
 	outputArray()
 	outputSliceTestingReference()
+	creatingAndLoopMap()
 }
 
 func openFile() *os.File {
@@ -76,4 +77,18 @@ func outputSliceTestingReference() {
 	fmt.Println("Slice Reference:", newSliceReferenz)
 	fmt.Println("Slice Origin", newSlice)
 
+}
+
+func creatingAndLoopMap() {
+	m := make(map[string]string)
+
+	m["test1"] = "blub1"
+	m["test2"] = "blub2"
+	m["test3"] = "blub3"
+	fmt.Println("Looping through Map:")
+
+	for i, v := range m {
+		fmt.Println("Key:", i)
+		fmt.Println("Value:", v)
+	}
 }
