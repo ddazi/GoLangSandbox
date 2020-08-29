@@ -18,12 +18,14 @@ func main() {
 
 	defer func() {
 		err := f.Close()
+		deleteFile(f)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}()
 	member := prepareStruct("danny")
 	writeFile(f, member)
+
 	outputArray()
 	outputSliceTestingReference()
 	creatingAndLoopMap()
@@ -47,6 +49,12 @@ func writeFile(f *os.File, member *member) {
 	}
 }
 
+func deleteFile(f *os.File) {
+	err := os.Remove(f.Name())
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 func prepareStruct(name string) *member {
 	member := member{name: name}
 	member.location = "Freiburg"
