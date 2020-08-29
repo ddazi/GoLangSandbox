@@ -6,6 +6,12 @@ import (
 	"os"
 )
 
+type member struct {
+	name     string
+	age      int
+	location string
+}
+
 func main() {
 	fmt.Println("Works")
 	f := openFile()
@@ -16,22 +22,31 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
-	writeFile(f)
+	member := prepareStruct("danny")
+	writeFile(f, member)
 }
 
 func openFile() *os.File {
-	f, err := os.OpenFile("test.csv", os.O_RDWR|os.O_CREATE, 0755)
+	f, err := os.OpenFile("test.txt", os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return f
 }
 
-func writeFile(f *os.File) {
+func writeFile(f *os.File, member *member) {
+
 	for i := 0; i <= 5; i++ {
-		_, err := f.Write([]byte("Writing Data:\n"))
+		_, err := f.Write([]byte(member.name + "\n" + member.location + "\n"))
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+}
+
+func prepareStruct(name string) *member {
+	member := member{name: name}
+	member.location = "Freiburg"
+	member.age = 2321
+	return &member
 }
