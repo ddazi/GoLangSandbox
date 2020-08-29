@@ -10,12 +10,13 @@ func main() {
 	fmt.Println("Works")
 	f := openFile()
 
-	err := f.Close()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	defer func() {
+		err := f.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	writeFile(f)
 }
 
 func openFile() *os.File {
@@ -24,4 +25,13 @@ func openFile() *os.File {
 		log.Fatal(err)
 	}
 	return f
+}
+
+func writeFile(f *os.File) {
+	for i := 0; i <= 5; i++ {
+		_, err := f.Write([]byte("Writing Data:\n"))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
