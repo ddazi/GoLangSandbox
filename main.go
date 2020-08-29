@@ -24,6 +24,7 @@ func main() {
 	}()
 	member := prepareStruct("danny")
 	writeFile(f, member)
+	outputArray()
 }
 
 func openFile() *os.File {
@@ -49,4 +50,14 @@ func prepareStruct(name string) *member {
 	member.location = "Freiburg"
 	member.age = 2321
 	return &member
+}
+
+func outputArray() {
+	newArray := [5]string{"test1", "test2", "test3", "test4", "test5"}
+	fmt.Println("Content Array Complete", newArray)
+
+	for i, v := range newArray {
+		fmt.Println("Content Array Line ", i, v)
+
+	}
 }
