@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +14,19 @@ type member struct {
 	name     string
 	age      int
 	location string
+}
+type address struct {
+	Street  string `json:"street"`
+	Suite   string `json:"suite"`
+	City    string `json:"city"`
+	Zipcode string `json:"zipcode"`
+}
+
+type userData struct {
+	Id       int     `json:"id"`
+	Username string  `json:"username"`
+	Email    string  `json:"email"`
+	Address  address `json:"address"`
 }
 
 func main() {
@@ -27,11 +42,12 @@ func main() {
 	}()
 	member := prepareStruct("danny")
 	writeFile(f, member)
-	outputArray()
-	outputSliceTestingReference()
-	creatingAndLoopMap()
-	go createAndServeHttp()
-	getHttpLocal()
+	//	outputArray()
+	//	outputSliceTestingReference()
+	//	creatingAndLoopMap()
+	//go createAndServeHttp()
+	//	getHttpLocal()
+	getJSON()
 }
 
 func openFile() *os.File {
@@ -140,4 +156,27 @@ func getHttpLocal() {
 		panic(err)
 	}
 
+}
+
+func getJSON() {
+	resp, err := http.Get("https://jsonplaceholder.typicode.com/users")
+	//resp, err := http.Get("https://api.coinmarketcap.com/v1/ticker/?limit=0")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var c []userData
+	err = json.Unmarshal(body, &c)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%v\n", c)
 }
