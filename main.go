@@ -176,11 +176,9 @@ func getJSON() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, v := range c {
-		email := v.Email
-		fmt.Printf("Email:", email)
-		username := v.Username
-		fmt.Printf("Username", username)
 
+	for l := range c {
+		fmt.Printf("Id = %v, Name = %v", c[l].Id, c[l].Username)
+		fmt.Println()
 	}
 }
