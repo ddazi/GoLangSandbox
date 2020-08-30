@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type member struct {
@@ -42,11 +43,11 @@ func main() {
 	}()
 	member := prepareStruct("danny")
 	writeFile(f, member)
-	//	outputArray()
-	//	outputSliceTestingReference()
-	//	creatingAndLoopMap()
-	//go createAndServeHttp()
-	//	getHttpLocal()
+	outputArray()
+	outputSliceTestingReference()
+	creatingAndLoopMap()
+	go createAndServeHttp()
+	getHttpLocal()
 	getJSON()
 }
 
@@ -178,6 +179,7 @@ func getJSON() {
 	}
 	fmt.Printf("Without Loop: Id = %v, Name = %v", c[1].Id, c[1].Username)
 	fmt.Println()
+	f, err := os.OpenFile("userFromApi.txt", os.O_RDWR|os.O_CREATE, 0755)
 
 	for l, v := range c {
 		fmt.Printf("l: %v ", l)
@@ -185,5 +187,13 @@ func getJSON() {
 
 		fmt.Printf("Id = %v, Name = %v", c[l].Id, c[l].Username)
 		fmt.Println()
+		writeFileFromApi(f, c[l])
+	}
+}
+
+func writeFileFromApi(f *os.File, userData userData) {
+	_, err := f.Write([]byte(userData.Username + "\n" + strconv.Itoa(userData.Id) + "\n"))
+	if err != nil {
+		log.Fatal(err)
 	}
 }
