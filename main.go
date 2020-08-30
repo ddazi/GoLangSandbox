@@ -160,7 +160,6 @@ func getHttpLocal() {
 
 func getJSON() {
 	resp, err := http.Get("https://jsonplaceholder.typicode.com/users")
-	//resp, err := http.Get("https://api.coinmarketcap.com/v1/ticker/?limit=0")
 	if err != nil {
 		log.Fatal(err)
 	}
